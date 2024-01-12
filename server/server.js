@@ -1,5 +1,5 @@
 const express = require('express');
-const ProductManager = require('./ProductManager');
+const ProductManager = require('../ProductManager');
 const app = express();
 const port = 8080;
 
@@ -30,4 +30,3 @@ app.get('/products/:pid', (req, res) => {
 app.listen(port, () => {
   console.log(`Server http://localhost:${port}`);
 });
-
