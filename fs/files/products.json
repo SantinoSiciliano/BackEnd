@@ -1,0 +1,27 @@
+[
+    
+    {
+      "id": 1,
+      "title": "zapatilla",
+      "photo": "image1.jpg",
+      "price": 150,
+      "stock": 25
+    },
+
+    {
+      "id": 2,
+      "title": "buzo",
+      "photo": "image2.jpg",
+      "price": 100,
+      "stock": 25
+    },
+
+    {
+      "id": 3,
+      "title": "remera",
+      "photo": "image3.jpg",
+      "price": 80,
+      "stock": 25
+    }
+
+]

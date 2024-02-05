@@ -1,0 +1,24 @@
+[
+    
+    {
+      "id": 1,
+      "name": "Avril",
+      "photo": "image1.jpg",
+      "email": "damian@gmail.com"
+    },
+
+    {
+      "id": 2,
+      "name": "Rosa",
+      "photo": "image2.jpg",
+      "emial": "damian@gmail.com"
+    },
+
+    {
+      "id": 3,
+      "name": "Damian",
+      "photo": "image3.jpg",
+      "email": "damian@gmail.com"
+    }
+
+  ]
