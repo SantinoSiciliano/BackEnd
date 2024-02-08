@@ -1,0 +1,21 @@
+<main class="flex-grow-1 p-3 my-2">
+  <h2 class="text-center">Todos nuestros productos!!</h2>
+  <section class="d-flex flex-grow-1 flex-wrap justify-content-evenly">
+  {{#each products}}
+    <div class="card m-2" style="width: 320px;">
+      <img src="{{this.photo}}" style="height: 200px;" class="card-img-top object-fit-cover" alt="{{this.title}}">
+      <div class="card-body d-flex flex-column justify-content-center">
+        <h5 class="card-title text-center">{{this.title}}</h5>
+        <p class="card-text text-center">
+          {{#if this.description}}
+            {{this.description}}
+          {{else}}
+            Description
+          {{/if}}
+        </p>
+        <button type="button" class="btn btn-danger">Añadir al carrito!!</button>
+      </div>
+    </div>
+  {{/each}}
+</section>
+</main>

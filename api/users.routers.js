@@ -1,6 +1,6 @@
 import { Router } from "express";
-import userData from "../../data/fs/users.fs.js";
-import userProps from "../../middlewares/propsUsers.mid.js";
+import userData from "./fs/UserManager.fs.js";
+import userProps from "../middlewares/propsUsers.mid.js";
 
 const userRoutes = Router();
 

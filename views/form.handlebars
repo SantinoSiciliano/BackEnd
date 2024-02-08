@@ -1,0 +1,28 @@
+<main class="flex-grow-1 p-3 m-auto my-2 d-flex w-100">
+
+  <section class="w-50">
+    <h2 class="text-center">Crea un nuevo producto!</h2>
+  <form style="width: 320px;">
+  <div class="mb-3 text-center">
+    <label for="title" class="form-label mb-0">Titulo</label>
+    <input type="text" class="form-control" id="title" aria-describedby="emailHelp">
+
+  <div class="mb-3 text-center">
+    <label for="photo" class="form-label">Foto</label>
+    <input type="text" class="form-control" id="photo">
+  </div>
+  <div class="mb-3 text-center">
+    <label for="price" class="form-label">Precio</label>
+    <input type="number" class="form-control" id="price">
+  </div>
+  <div class="mb-3 text-center">
+    <label for="stock" class="form-label">Cantidad</label>
+    <input type="number" class="form-control" id="stock">
+  </div>
+
+  <button id="newProduct" type="button" class="w-100 btn btn-danger">Crear</button>
+</form>
+ </section>
+</main>
+<script src="/socket.io/socket.io.js"></script>
+<script src="/form.js"></script>

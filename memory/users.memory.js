@@ -19,14 +19,14 @@ class UsersManager {
         this.users = JSON.parse(fs.readFileSync(this.path, "utf-8"));
       }
     } catch (error) {
-      console.error("Error initializing users:", error.message);
+      console.error("Error al inicializar usuarios:", error.message);
     }
   }
 
   async create(data) {
     try {
       if (!data.name || !data.email) {
-        throw new Error("Please, insert name & email");
+        throw new Error("Por favor, ingresa nombre y correo electrónico");
       }
 
       const user = {
@@ -50,14 +50,14 @@ class UsersManager {
     try {
       await fs.promises.writeFile(this.path, JSON.stringify(this.users, null, 2), "utf-8");
     } catch (error) {
-      console.error("Error saving users to file:", error.message);
+      console.error("Error al guardar usuarios en el archivo:", error.message);
     }
   }
 
   readUsers() {
     try {
       if (UsersManager.#users.length === 0) {
-        throw new Error("Not found users!");
+        throw new Error("Usuarios no encontrados!");
       } else {
         return UsersManager.#users;
       }
@@ -69,7 +69,7 @@ class UsersManager {
   readOne(id) {
     try {
       if (!id) {
-        throw new Error("Please provide an ID");
+        throw new Error("Por favor proporciona un ID");
       }
 
       const user = UsersManager.#users.find((each) => each.id === Number(id));
@@ -77,7 +77,7 @@ class UsersManager {
       if (user) {
         return user;
       } else {
-        throw new Error("Not found user with id=" + id);
+        throw new Error("Usuario no encontrado con ID=" + id);
       }
     } catch (error) {
       return error.message;

@@ -19,6 +19,12 @@
       "name": "Damian",
       "photo": "image3.jpg",
       "email": "damian@gmail.com"
-    }
+    },
 
+    {
+      "id": 4,
+      "name": "Tomas",
+      "photo": "image4.jpg",
+      "email": "tomas@gmail.com"
+    }
   ]

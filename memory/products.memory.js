@@ -19,14 +19,14 @@ class ProductsManager {
         this.products = JSON.parse(fs.readFileSync(this.path, "utf-8"));
       }
     } catch (error) {
-      console.error("Error products:", error.message);
+      console.error("Error en los productos:", error.message);
     }
   }
 
   async create(data) {
     try {
       if (!data.title || !data.photo || !data.price || !data.stock) {
-        throw new Error("Please, insert title, photo, price, stock");
+        throw new Error("Por favor, inserta título, foto, precio, stock");
       }
 
       const product = {
@@ -51,14 +51,14 @@ class ProductsManager {
     try {
       await fs.promises.writeFile(this.path, JSON.stringify(this.products, null, 2), "utf-8");
     } catch (error) {
-      console.error("Error saving products:", error.message);
+      console.error("Error al guardar los productos:", error.message);
     }
   }
 
   readProducts() {
     try {
       if (ProductsManager.#products.length === 0) {
-        throw new Error("The product was not found!");
+        throw new Error("El producto no fue encontrado!");
       } else {
         return ProductsManager.#products;
       }
@@ -73,7 +73,7 @@ class ProductsManager {
       if (one) {
         return one;
       } else {
-        throw new Error("Not found product with id=" + id);
+        throw new Error("Producto no encontrado con ID=" + id);
       }
     } catch (error) {
       return error.message;

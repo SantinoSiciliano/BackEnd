@@ -1,27 +1,44 @@
 [
-    
-    {
-      "id": 1,
-      "title": "zapatilla",
-      "photo": "image1.jpg",
-      "price": 150,
-      "stock": 25
-    },
-
-    {
-      "id": 2,
-      "title": "buzo",
-      "photo": "image2.jpg",
-      "price": 100,
-      "stock": 25
-    },
-
-    {
-      "id": 3,
-      "title": "remera",
-      "photo": "image3.jpg",
-      "price": 80,
-      "stock": 25
-    }
-
+  {
+    "id": 1,
+    "title": "buzo",
+    "photo": "https://drops-ba.com/wp-content/uploads/2024/01/Palm-Angels-London-Sprayed-Hoodie-Black-Purple.jpg",
+    "price": 80,
+    "stock": 25
+  },
+  {
+    "id": 2,
+    "title": "Remera",
+    "photo": "https://drops-ba.com/wp-content/uploads/2024/01/Supreme-NYC-Tee-White.jpg",
+    "price": 150,
+    "stock": 35
+  },
+  {
+    "id": 3,
+    "title": "zapatilla",
+    "photo": "https://drops-ba.com/wp-content/uploads/2023/06/Nike-Hot-Step-Air-Terra-Drake-NOCTA-Triple-Black.jpg",
+    "price": 300,
+    "stock": 30
+  },
+  {
+    "id": 4,
+    "title": "buzo",
+    "photo": "https://drops-ba.com/wp-content/uploads/2024/01/Palm-Angels-London-Sprayed-Hoodie-Black-Purple.jpg",
+    "price": 90,
+    "stock": 25
+  },
+  {
+    "id": 5,
+    "title": "Remera",
+    "photo": "https://drops-ba.com/wp-content/uploads/2024/01/Supreme-NYC-Tee-White.jpg",
+    "price": 40,
+    "stock": 25
+  },
+  {
+    "id": 6,
+    "title": "zapatilla",
+    "photo": "https://drops-ba.com/wp-content/uploads/2023/06/Nike-Hot-Step-Air-Terra-Drake-NOCTA-Triple-Black.jpg",
+    "price": 250,
+    "stock": 20
+  }
 ]
