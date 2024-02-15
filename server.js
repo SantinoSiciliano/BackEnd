@@ -1,10 +1,11 @@
+import "dotenv/config.js";
 import express from "express";
 import router from "./api/index.router.js";
 import { createServer } from "http";
 import { Server } from "socket.io";
 import morgan from "morgan";
 import { engine } from "express-handlebars";
-import dbConnection from "./utils/db.js";
+import dbConnection from "./src/utils/db.js";
 import errorHandler from "./middlewares/errorHandler.mid";
 import products from "./fs/files/ProductManager.fs.js";
 import router from "./api/index.router.js";
@@ -17,10 +18,17 @@ import __dirname from "./utils.js";
 // Crear servidor express
 const app = express();
 const PORT = 8080;
+const ready = () => {
+  console.log("server ready on port" + PORT);
+  dbConnection();
+};
 
 // Crear servidor HTTP y WebSocket
 const httpServer = createServer(app);
 const io = new Server(httpServer);
+// Iniciar el servidor HTTP
+httpServer.listen(PORT, ready);
+//socketServer.on("connetion", socketUtils);
 
 // Configurar handlebars y directorio de vistas
 app.engine("handlebars", engine({ extname: ".handlebars" }));
@@ -84,9 +92,4 @@ io.on("connection", (socket) => {
       console.log(error);
     }
   });
-});
-
-// Iniciar el servidor HTTP
-httpServer.listen(PORT, () => {
-  console.log(`Server ready on port ${PORT}`);
 });

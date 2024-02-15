@@ -1,53 +1,52 @@
 import { Router } from "express";
-import userData from "./fs/UserManager.fs.js";
-import userProps from "../middlewares/propsUsers.mid.js";
+import propsUsers from "../middlewares/propsUsers.mid.js";
+import { users } from "../mongo/manager.mongo.js";
+import User from "../mongo/users.model.js";
 
-const userRoutes = Router();
+const usersRouter = Router();
+const manager = users;
 
-userRoutes.post("/", userProps, async (req, res, next) => {
+usersRouter.post("/", propsUsers, async (req, res, next) => {
   try {
     const data = req.body;
-    const response = await userData.createUser(data);
-    if (response === "Título, foto, precio y stock son requeridos") {
-      return res.json({
-        statusCode: 400,
-        message: response,
-      });
-    } else {
-      return res.json({
-        statusCode: 201,
-        response,
-      });
-    }
+    const idUsuario = await users.create(data);
+
+    return res.status(201).json({
+      statusCode: 201,
+      response: { _id: idUsuario },
+    });
   } catch (error) {
     return next(error);
   }
 });
 
-userRoutes.get("/", async (req, res, next) => {
+usersRouter.get("/", async (req, res, next) => {
   try {
-    const allUsers = await userData.readUsers();
-    if (Array.isArray(allUsers)) {
-      return res.json({
-        statusCode: 200,
-        response: allUsers,
-      });
-    } else {
-      return res.json({
-        statusCode: 404,
-        message: allUsers,
-      });
-    }
+    const { filter, order } = req.query;
+
+    const parsedFilter = filter ? JSON.parse(filter) : {};
+
+    const readObj = {
+      filter: parsedFilter,
+      order: JSON.parse(order || "{}"),
+    };
+
+    const result = await users.read(readObj);
+
+    return res.json({
+      statusCode: 200,
+      response: result,
+    });
   } catch (error) {
     return next(error);
   }
 });
 
-userRoutes.get("/:uid", async (req, res, next) => {
+usersRouter.get("/:uid", async (req, res, next) => {
   try {
     const { uid } = req.params;
-    const user = await userData.readUserById(uid);
-    if (!user) {
+    const one = await users.readOne(uid);
+    if (!one) {
       return res.status(404).json({
         statusCode: 404,
         message: `Usuario con ID ${uid} no encontrado`,
@@ -55,11 +54,59 @@ userRoutes.get("/:uid", async (req, res, next) => {
     }
     return res.status(200).json({
       statusCode: 200,
-      response: [user],
+      response: [one],
     });
   } catch (error) {
     return next(error);
   }
 });
 
-export default userRoutes;
+usersRouter.put("/:uid", async (req, res, next) => {
+  try {
+    const { uid } = req.params;
+    const dataToUpdate = req.body;
+    const updatedUser = await users.update(uid, dataToUpdate);
+
+    if (!updatedUser) {
+      const error = new Error("No se encontró el usuario");
+      error.statusCode = 404;
+      throw error;
+    }
+
+    return res.status(200).json({
+      statusCode: 200,
+      response: updatedUser,
+    });
+  } catch (error) {
+    return next(error);
+  }
+});
+
+usersRouter.delete("/:uid", async (req, res, next) => {
+  try {
+    const { uid } = req.params;
+    const deletedUser = await User.findByIdAndDelete(uid);
+
+    return res.status(200).json({
+      statusCode: 200,
+      response: deletedUser,
+    });
+  } catch (error) {
+    return next(error);
+  }
+});
+usersRouter.get("/by-email/:email", async (req, res, next) => {
+  try {
+    const { email } = req.params;
+    const user = await users.readByEmail(email);
+
+    return res.json({
+      statusCode: 200,
+      response: user,
+    });
+  } catch (error) {
+    return next(error);
+  }
+});
+
+export default usersRouter;
