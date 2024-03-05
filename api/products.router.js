@@ -25,22 +25,28 @@ productsRouter.post("/", propsProducts, async (req, res, next) => {
 });
 productsRouter.get("/", async (req, res, next) => {
   try {
-    const all = await products.read({});
-    if (Array.isArray(all)) {
-      return res.json({
-        statusCode: 200,
-        response: all,
-      });
-    } else {
-      return res.json({
-        statusCode: 404,
-        message: all,
-      });
-    }
+    const { filter, sortAndPaginate } = req.query;
+    const parsedFilter = filter ? JSON.parse(filter) : {};
+    const parsedSortAndPaginate = sortAndPaginate
+      ? JSON.parse(sortAndPaginate)
+      : {};
+
+    const readObj = {
+      filter: parsedFilter,
+      sortAndPaginate: parsedSortAndPaginate,
+    };
+
+    const all = await products.read(readObj);
+
+    return res.json({
+      statusCode: 200,
+      response: all,
+    });
   } catch (error) {
     return next(error);
   }
 });
+
 productsRouter.get("/:pid", async (req, res, next) => {
   try {
     const { pid } = req.params;

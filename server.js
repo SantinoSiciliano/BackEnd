@@ -1,95 +1,89 @@
 import "dotenv/config.js";
 import express from "express";
-import router from "./api/index.router.js";
 import { createServer } from "http";
 import { Server } from "socket.io";
 import morgan from "morgan";
 import { engine } from "express-handlebars";
 import dbConnection from "./src/utils/db.js";
-import errorHandler from "./middlewares/errorHandler.mid";
-import products from "./fs/files/ProductManager.fs.js";
+import Product from "./mongo/products.model.js"
 import router from "./api/index.router.js";
+import errorHandler from "./middlewares/errorHandler.mid";
 import pathHandler from "./middlewares/pathHandler.mid";
 import propsProducts from "./middlewares/propsProducts.mid.js";
 import propsUsers from "./middlewares/propsUsers.mid.js";
 import propsOrders from "./middlewares/propsOrders.mid.js";
 import __dirname from "./utils.js";
 
-// Crear servidor express
 const app = express();
 const PORT = 8080;
 const ready = () => {
-  console.log("server ready on port" + PORT);
-  dbConnection();
+  console.log("Server ready on port " + PORT);
 };
 
-// Crear servidor HTTP y WebSocket
+dbConnection();
+
 const httpServer = createServer(app);
 const io = new Server(httpServer);
-// Iniciar el servidor HTTP
-httpServer.listen(PORT, ready);
-//socketServer.on("connetion", socketUtils);
 
-// Configurar handlebars y directorio de vistas
+httpServer.listen(PORT, ready);
+
 app.engine("handlebars", engine({ extname: ".handlebars" }));
 app.set("view engine", "handlebars");
 app.set("views", __dirname + "/src/views");
 
-// Middleware para manejar variables locales
 app.use((req, res, next) => {
   res.locals.isHome = req.path === "/home";
   next();
 });
 
-// Middleware para parsear JSON y URL-encoded
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Middleware de registro de solicitudes
 app.use(morgan("dev"));
 
-// Middleware para servir archivos estáticos
 app.use(express.static("public"));
 
-// Endpoint para manejar el registro de usuarios
 app.post("/register", (req, res) => {
   const { username, email, password } = req.body;
   res.send(`User registered: ${username}`);
 });
 
-// Rutas principales
 app.use("/", router);
 
-// Manejar errores
 app.use(errorHandler);
 
-// Manejar rutas no encontradas
 app.use(pathHandler);
 
-// Middleware para productos
 app.use(propsProducts);
 
-// Middleware para usuarios
 app.use(propsUsers);
 
-// Middleware para órdenes
 app.use(propsOrders);
 
-// Manejar la conexión del socket
 io.on("connection", (socket) => {
   console.log(`Client ${socket.id} connected`);
   socket.emit("welcome", "Welcome to my App!");
-  socket.emit("products", products.readProducts());
+
+  Product.find({})
+    .then((products) => {
+      socket.emit("products", products);
+    })
+    .catch((error) => {
+      console.error("Error fetching products:", error);
+    });
 
   socket.on("newProduct", async (data) => {
     try {
-      console.log(data);
-      await products.createProduct(data);
-      const updatedProducts = products.readProducts();
-      console.log("Updated products:", updatedProducts);
-      socket.emit("products", updatedProducts);
+      await Product.create(data);
+      Product.find({}, (err, updatedProducts) => {
+        if (err) {
+          console.error("Error fetching updated products:", err);
+        } else {
+          socket.emit("products", updatedProducts);
+        }
+      });
     } catch (error) {
-      console.log(error);
+      console.error("Error creating product:", error);
     }
   });
 });

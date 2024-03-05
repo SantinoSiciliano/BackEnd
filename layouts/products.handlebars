@@ -1,5 +1,10 @@
 <main class="flex-grow-1 p-3 my-2">
   <h2 class="text-center">Todos nuestros productos!!</h2>
+  <div class="search">
+  <input type="text" id="searchInput" placeholder="Buscar productos...">
+  <button onclick="searchProducts()">Buscar</button>
+</div>
+
   <section class="d-flex flex-grow-1 flex-wrap justify-content-evenly">
   {{#each products}}
     <div class="card m-2" style="width: 320px;">
@@ -18,4 +23,8 @@
     </div>
   {{/each}}
 </section>
+<div class="pagination">
+  <button onclick="previousPage()">Anterior</button>
+  <button onclick="nextPage()">Siguiente</button>
+</div>
 </main>

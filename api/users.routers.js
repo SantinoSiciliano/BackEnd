@@ -22,13 +22,20 @@ usersRouter.post("/", propsUsers, async (req, res, next) => {
 
 usersRouter.get("/", async (req, res, next) => {
   try {
-    const { filter, order } = req.query;
+    const { filter, sortAndPaginate } = req.query;
 
     const parsedFilter = filter ? JSON.parse(filter) : {};
+    const parsedSortAndPaginate = sortAndPaginate
+      ? JSON.parse(sortAndPaginate)
+      : {};
 
     const readObj = {
       filter: parsedFilter,
-      order: JSON.parse(order || "{}"),
+      sortAndPaginate: {
+        limit: parsedSortAndPaginate.limit || 10,
+        page: parsedSortAndPaginate.page || 1,
+        sort: parsedSortAndPaginate.sort || {},
+      },
     };
 
     const result = await users.read(readObj);
@@ -49,7 +56,7 @@ usersRouter.get("/:uid", async (req, res, next) => {
     if (!one) {
       return res.status(404).json({
         statusCode: 404,
-        message: `Usuario con ID ${uid} no encontrado`,
+        message: `User with ID ${uid} not found`,
       });
     }
     return res.status(200).json({
@@ -103,6 +110,19 @@ usersRouter.get("/by-email/:email", async (req, res, next) => {
     return res.json({
       statusCode: 200,
       response: user,
+    });
+  } catch (error) {
+    return next(error);
+  }
+});
+usersRouter.get("/report/:uid", async (req, res, next) => {
+  try {
+    const { uid } = req.params;
+    const reportData = await orders.report(uid);
+
+    return res.status(200).json({
+      statusCode: 200,
+      response: reportData,
     });
   } catch (error) {
     return next(error);
